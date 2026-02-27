@@ -241,7 +241,7 @@ body{background:#f7f7f7;color:#222;scroll-behavior:smooth}
     font-weight: 600;
     font-size: 13px;
     white-space: nowrap;
-    text-transform: uppercase;
+    text-transform: none;
     letter-spacing: 0.5px;
     transition: color 0.3s ease;
 }
