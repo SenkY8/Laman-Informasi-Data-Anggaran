@@ -1069,7 +1069,7 @@ table tbody tr:hover td {
     <!-- Filter Tahun Global -->
     <div class="navbar-filter">
         <label class="navbar-filter-label" for="tahunFilter">
-            <i class="fas fa-calendar-alt navbar-filter-icon"></i> T.A.
+            <i class="fas fa-calendar-alt navbar-filter-icon"></i> Pilih Tahun
         </label>
         <select id="tahunFilter" onchange="filterTahun(this.value)">
             <?php foreach($tahun_list as $t): ?>
@@ -1089,7 +1089,7 @@ table tbody tr:hover td {
 <!-- NAVBAR DRAWER -->
 <div class="navbar-drawer" id="navbarDrawer">
     <div class="drawer-header">
-        <h3>MinDA BBKK</h3>
+        <h3>MinDA BBKK Batam</h3>
         <p>Laman Informasi Data Anggaran</p>
     </div>
 
