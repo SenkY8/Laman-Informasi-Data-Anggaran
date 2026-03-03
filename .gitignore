@@ -1,0 +1,42 @@
+# Koneksi database
+koneksi.php
+
+# Environment & config
+.env
+config.php
+
+# Folder upload / file user
+uploads/
+asset/uploads/
+
+# Log files
+*.log
+logs/
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor / IDE
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Node / NPM (jika ada)
+node_modules/
+npm-debug.log
+
+# Composer (jika ada)
+vendor/
+composer.lock
+
+# Cache
+*.cache
+cache/
+
+# Backup files
+*.bak
+*.sql.bak
+*.old
