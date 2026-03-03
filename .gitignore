@@ -1,6 +1,9 @@
 # Koneksi database
 koneksi.php
 
+# Email credentials
+email/config_email.php
+
 # Environment & config
 .env
 config.php
