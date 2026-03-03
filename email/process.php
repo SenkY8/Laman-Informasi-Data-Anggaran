@@ -5,6 +5,7 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== true) {
     exit;
 }
 include "../koneksi.php";
+include "config_email.php";
 
 // SAAT DEBUG (boleh kamu hapus nanti kalau sudah jalan)
 error_reporting(E_ALL);
@@ -14,7 +15,6 @@ ini_set('display_errors', 1);
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-// STRUKTUR: kemenkes1/email/process.php → ../phpmailer/src/...
 require '../phpmailer/src/Exception.php';
 require '../phpmailer/src/PHPMailer.php';
 require '../phpmailer/src/SMTP.php';
@@ -26,7 +26,6 @@ function clean($conn, $str) {
 $action = $_POST['action'] ?? $_GET['action'] ?? '';
 
 if ($action === 'save') {
-    // TAMBAH / EDIT EMAIL
     $id    = isset($_POST['id']) ? (int)$_POST['id'] : 0;
     $nama  = clean($koneksi, $_POST['nama'] ?? '');
     $email = clean($koneksi, $_POST['email'] ?? '');
@@ -37,7 +36,6 @@ if ($action === 'save') {
         $_SESSION['error'] = 'Format email tidak valid.';
     } else {
         if ($id > 0) {
-            // UPDATE
             $sql = "UPDATE email_list SET nama='$nama', email='$email' WHERE id=$id";
             if (mysqli_query($koneksi, $sql)) {
                 $_SESSION['success'] = 'Email berhasil diperbarui.';
@@ -45,7 +43,6 @@ if ($action === 'save') {
                 $_SESSION['error'] = 'Gagal memperbarui email: '.mysqli_error($koneksi);
             }
         } else {
-            // INSERT
             $sql = "INSERT INTO email_list (nama, email) VALUES ('$nama', '$email')";
             if (mysqli_query($koneksi, $sql)) {
                 $_SESSION['success'] = 'Email baru berhasil ditambahkan.';
@@ -60,7 +57,6 @@ if ($action === 'save') {
 
 } elseif ($action === 'delete') {
 
-    // HAPUS EMAIL
     $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
     if ($id > 0) {
         $sql = "DELETE FROM email_list WHERE id=$id";
@@ -78,7 +74,6 @@ if ($action === 'save') {
 
 } elseif ($action === 'broadcast') {
 
-    // KIRIM EMAIL MASSAL via PHPMailer (SMTP)
     $subject = trim($_POST['subject'] ?? '');
     $message = trim($_POST['message'] ?? '');
 
@@ -101,22 +96,15 @@ if ($action === 'save') {
     $mail = new PHPMailer(true);
 
     try {
-        // ========= KONFIGURASI SMTP DI SINI =========
         $mail->isSMTP();
-
-        // GANTI BAGIAN INI SESUAI SERVER SMTP YANG KAMU PAKAI
-        $mail->Host       = 'smtp.gmail.com';          // contoh pakai Gmail
+        $mail->Host       = MAIL_HOST;
         $mail->SMTPAuth   = true;
-        $mail->Username   = 'nopriadi2411@gmail.com';    // GANTI: email pengirim
-        $mail->Password   = 'kiovgmzrihzozxml';    // GANTI: app password / password SMTP
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS; // atau PHPMailer::ENCRYPTION_SMTPS
-        $mail->Port       = 587;                       // 587 (TLS) atau 465 (SSL)
-
-        // From harus cocok dengan akun SMTP di atas
-        $mail->setFrom('email_kamu@gmail.com', 'MinDA BBKK Batam'); // SESUAIKAN
-        // ============================================
-
-        $mail->isHTML(false); // isi pesan sebagai text biasa; set true kalau mau HTML
+        $mail->Username   = MAIL_USERNAME;
+        $mail->Password   = MAIL_PASSWORD;
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port       = MAIL_PORT;
+        $mail->setFrom(MAIL_FROM, MAIL_FROM_NAME);
+        $mail->isHTML(false);
 
         $failed = [];
 
